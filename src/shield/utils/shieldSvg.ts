@@ -53,19 +53,36 @@ function safeFilePart(name: string): string {
  */
 export function buildShieldSvg(name: string, rules: string[], shape?: ShieldShape): string {
   const shp = shape ?? shapeFor(name);
+  const list = rules.slice(0, 5);
 
-  let y = 182;
-  const ruleSvg = rules
-    .slice(0, 5)
-    .map((rule) => {
-      const lines = wrapText(rule, 20);
+  /**
+   * 글자 크기를 16px부터 한 단계씩 낮추며, 규칙 전체가 도형의 안전 영역
+   * (safeRatio 아래는 방패가 좁아져 글자가 잘린다) 안에 들어오는 첫 크기를 고른다.
+   * 크기를 줄이면 한 줄에 들어가는 글자 수가 늘어 줄 수도 함께 줄어든다.
+   */
+  const START_Y = 182;
+  const safeBottom = H * shp.safeRatio;
+  let fontSize = 16;
+  let wrapped: string[][] = [];
+  for (let size = 16; size >= 9; size -= 0.5) {
+    fontSize = size;
+    wrapped = list.map((rule) => wrapText(rule, Math.round((20 * 16) / size)));
+    const lineCount = wrapped.reduce((n, lines) => n + lines.length, 0);
+    const needed = lineCount * size * 1.25 + Math.max(0, wrapped.length - 1) * size * 0.5;
+    if (START_Y + needed <= safeBottom) break;
+  }
+
+  const lineHeight = fontSize * 1.25;
+  let y = START_Y;
+  const ruleSvg = wrapped
+    .map((lines) => {
       const block = lines
         .map(
           (ln, i) =>
-            `<text x="${i === 0 ? 92 : 104}" y="${y + i * 20}" fill="#eaf0ff" font-size="16" font-family="'Malgun Gothic',sans-serif">${i === 0 ? '◆ ' : ''}${escapeXml(ln)}</text>`,
+            `<text x="${i === 0 ? 92 : 92 + fontSize * 0.75}" y="${y + i * lineHeight}" fill="#eaf0ff" font-size="${fontSize}" font-family="'Malgun Gothic',sans-serif">${i === 0 ? '◆ ' : ''}${escapeXml(ln)}</text>`,
         )
         .join('');
-      y += lines.length * 20 + 8;
+      y += lines.length * lineHeight + fontSize * 0.5;
       return block;
     })
     .join('');

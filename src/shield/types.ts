@@ -29,6 +29,11 @@ export interface ShieldShape {
   outer: string;
   inner: string;
   frame: string;
+  /**
+   * 글자를 넣어도 안전한 세로 범위 (방패 높이 대비 비율).
+   * 이 아래는 도형이 뾰족하게 좁아져 글자가 잘린다.
+   */
+  safeRatio: number;
 }
 
 /** 갤러리에 등록된 방패 한 장. */
