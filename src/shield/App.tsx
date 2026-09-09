@@ -62,6 +62,9 @@ export default function App() {
 
   const goStep = (next: number) => {
     setStep(next);
+    // 한 단계에서 띄운 안내가 다음 단계까지 따라가지 않도록 지운다.
+    window.clearTimeout(flashTimer.current);
+    setStatus('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -217,6 +220,7 @@ export default function App() {
           shape={shape}
           entries={gallery}
           galleryRef={galleryRef}
+          status={status}
           onPrev={() => goStep(1)}
           onNext={() => goStep(3)}
           onSavePng={handleSavePng}

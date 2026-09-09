@@ -8,28 +8,43 @@ const escapeXml = (s: string): string =>
   String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c] as string);
 
 /**
+ * 글자를 사람이 보는 한 덩어리 단위로 센다.
+ *
+ * JS의 `String.length`와 `slice`는 UTF-16 단위라서 이모지 한 글자를 반으로 쪼갠다.
+ * 자를 위치가 하필 그 사이에 떨어지면 저장한 PNG에 깨진 글자가 남는다.
+ * `Intl.Segmenter`가 있으면 자소 덩어리(🧑‍🤝‍🧑 같은 결합 이모지도 한 글자)로,
+ * 없으면 코드포인트 단위로 물러선다. (원본도 코드포인트 단위로 셌다.)
+ */
+const graphemes: (s: string) => string[] =
+  typeof Intl !== 'undefined' && 'Segmenter' in Intl
+    ? ((seg) => (s: string) => [...seg.segment(s)].map((g) => g.segment))(
+        new Intl.Segmenter(undefined, { granularity: 'grapheme' }),
+      )
+    : (s: string) => [...s];
+
+/**
  * SVG에는 자동 줄바꿈이 없어 직접 자른다.
  * 한 줄 최대 `max`글자를 넘지 않게 하되, 공백이 있으면 낱말 경계에서 끊는다.
- * (원본은 글자 수만 세어 영어 단어 한가운데를 잘랐다.)
+ * (원본은 낱말을 무시하고 세어 영어 단어 한가운데를 잘랐다.)
  */
 function wrapText(text: string, max: number): string[] {
   const lines: string[] = [];
-  let line = '';
+  let line: string[] = [];
 
   const flush = () => {
-    if (line) lines.push(line);
-    line = '';
+    if (line.length) lines.push(line.join(''));
+    line = [];
   };
 
   for (const word of text.split(/\s+/).filter(Boolean)) {
-    let w = word;
-    // 공백 없이 max를 넘는 긴 덩어리는 그대로 잘라 넣는다.
+    let w = graphemes(word);
+    // 공백 없이 max를 넘는 긴 덩어리는 글자 경계에서 잘라 넣는다.
     while (w.length > max) {
       flush();
-      lines.push(w.slice(0, max));
+      lines.push(w.slice(0, max).join(''));
       w = w.slice(max);
     }
-    const candidate = line ? `${line} ${w}` : w;
+    const candidate = line.length ? [...line, ' ', ...w] : w;
     if (candidate.length > max) {
       flush();
       line = w;
