@@ -172,6 +172,14 @@ export default function App() {
           <p className="mt-1 text-slate-400">
             AI의 판단 기준을 사람이 어떻게 설정하느냐에 따라 공정성과 인간 사회의 신뢰가 결정됩니다.
           </p>
+          <p className="mt-3">
+            <a
+              href="/shield.html"
+              className="text-indigo-500 underline underline-offset-4 hover:text-indigo-700"
+            >
+              AI 안전 방패 메이커 (딥페이크 안전 사용 규칙) →
+            </a>
+          </p>
         </footer>
       </div>
 
