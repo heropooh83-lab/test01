@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Tailwind v4 utility used by App.tsx and ClassroomGuideModal.tsx.
+   Declared here because the project ships no tailwind.config file. */
+@theme {
+  --animate-fade-in: fade-in 0.35s ease-out both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+  }
+}
