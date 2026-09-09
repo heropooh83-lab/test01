@@ -48,3 +48,21 @@ src/
 
 Vite 6 · React 19 · TypeScript · Tailwind CSS v4 · lucide-react.
 서버와 외부 API 호출이 없어 정적 호스팅만으로 배포됩니다 (`vercel.json`에 SPA 리라이트 포함).
+
+## 배포 (Vercel)
+
+`vercel.json`에 프레임워크, 빌드 명령, 출력 디렉터리를 명시해 두었으므로 별도 설정 없이 배포됩니다.
+
+| 항목 | 값 |
+| --- | --- |
+| Framework Preset | Vite |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+| Root Directory | 저장소 루트 (비워 둠) |
+
+**404: NOT_FOUND 가 뜬다면** 대부분 Vercel이 바라보는 브랜치에 앱 코드가 없는 경우입니다.
+Vercel은 기본적으로 `main` 브랜치를 프로덕션으로 배포하므로, 앱이 다른 브랜치에만 있으면
+빌드 결과물이 비어 404가 납니다. Vercel 프로젝트의 Settings → Git → Production Branch가
+실제 코드가 있는 브랜치를 가리키는지 확인하세요.
+
+SPA 새로고침 시 404가 나는 경우는 `vercel.json`의 rewrites 규칙이 처리합니다.
