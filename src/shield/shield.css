@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/* 원본 HTML의 :root 변수를 Tailwind v4 테마 토큰으로 옮긴 것.
+   이렇게 두면 bg-navy-2 / text-gold-1 처럼 유틸리티로 바로 쓸 수 있다. */
+@theme {
+  --color-ink: #1a1f33;
+  --color-navy-1: #3a4d8f;
+  --color-navy-2: #243268;
+  --color-navy-3: #161f45;
+  --color-gold-1: #ffd873;
+  --color-gold-2: #e7b53f;
+  --color-gold-3: #b6841f;
+  --color-parch-1: #f7f0dd;
+  --color-parch-2: #efe4c6;
+  --color-guard: #2f8f5b;
+  --color-guard-d: #1f6f43;
+  --color-danger: #c2506a;
+  --color-danger-d: #9c3a52;
+  --color-line: #d8cfb4;
+  --color-line-cool: #c3c9de;
+
+  --animate-rise: rise 0.28s ease;
+  --animate-forge: forge 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes forge {
+  0% {
+    transform: scale(0.8) rotate(-3deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.03) rotate(1deg);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* 한글 줄바꿈은 낱말 단위(keep-all)가 훨씬 읽기 좋다. */
+body {
+  font-family: "Pretendard", "맑은 고딕", "Malgun Gothic", system-ui, sans-serif;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 여러 겹의 그라디언트는 유틸리티로 옮기면 오히려 읽기 어려워 클래스로 남긴다. */
+.forge-bg {
+  background:
+    radial-gradient(1100px 520px at 50% -12%, #35478a 0%, transparent 62%),
+    radial-gradient(700px 380px at 8% 6%, rgba(255, 216, 115, 0.1) 0%, transparent 55%),
+    linear-gradient(180deg, #1c2650 0%, #141d40 42%, #101734 100%);
+  background-attachment: fixed;
+}
+
+/* 양피지 패널: 안쪽 광택 + 금빛 모서리 장식. */
+.parchment {
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 40%),
+    linear-gradient(180deg, var(--color-parch-1), var(--color-parch-2));
+  box-shadow:
+    0 20px 50px rgba(8, 12, 30, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 0 0 1px rgba(182, 132, 31, 0.12);
+}
+
+.parchment::before,
+.parchment::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-gold-3);
+  opacity: 0.5;
+}
+
+.parchment::before {
+  top: 9px;
+  left: 9px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.parchment::after {
+  bottom: 9px;
+  right: 9px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.shield-plate {
+  background: linear-gradient(180deg, var(--color-gold-1), var(--color-gold-2) 55%, var(--color-gold-3));
+}
+
+.shield-face {
+  background: linear-gradient(180deg, var(--color-navy-1) 0%, var(--color-navy-2) 46%, var(--color-navy-3) 100%);
+}
+
+.rule-badge {
+  background: radial-gradient(circle at 35% 30%, var(--color-gold-1), var(--color-gold-2) 70%, var(--color-gold-3));
+  box-shadow:
+    inset 0 -2px 3px rgba(182, 132, 31, 0.5),
+    0 2px 5px rgba(182, 132, 31, 0.3);
+}
+
+.gold-btn {
+  background: linear-gradient(180deg, var(--color-gold-1), var(--color-gold-2));
+  box-shadow: 0 5px 16px rgba(231, 181, 63, 0.36);
+}
+
+.gold-btn:hover {
+  filter: brightness(1.04);
+  box-shadow: 0 7px 20px rgba(231, 181, 63, 0.46);
+}
+
+.gold-text {
+  color: transparent;
+  background: linear-gradient(180deg, var(--color-gold-1), var(--color-gold-2) 70%, var(--color-gold-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* 교실 게시용 인쇄: 방패와 규칙만 남기고 조작 요소를 지운다. */
+@media print {
+  body {
+    background: #fff !important;
+    padding: 0;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .parchment {
+    box-shadow: none;
+    border: none;
+    background: #fff;
+  }
+
+  .print-plain {
+    color: #000 !important;
+    text-shadow: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -6,6 +6,10 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/shield",
+      "destination": "/shield.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
