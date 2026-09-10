@@ -1,24 +1,28 @@
 # 수업용 AI 웹앱 모음
 
 클로드 채팅으로 만든 수업용 웹앱을 분석해 하나의 Vite 프로젝트로 이식한 저장소입니다.
-현재 두 개의 앱이 각자의 진입 HTML을 갖고 함께 빌드됩니다.
+현재 세 개의 앱이 각자의 진입 HTML을 갖고 함께 빌드됩니다.
 
 | 앱 | 주소 | 원본 | 분석 문서 |
 | --- | --- | --- | --- |
 | AI 윤리 판단 기준 시뮬레이터 | `/` | `heropooh83-lab/A2026-AI-Ethics` (커밋 `a3a3bbd`) | [ARCHITECTURE.md](./ARCHITECTURE.md) |
 | AI 안전 방패 메이커 | `/shield.html` (배포 시 `/shield`) | 클로드 채팅으로 만든 단일 HTML 1개 | [ARCHITECTURE-SHIELD.md](./ARCHITECTURE-SHIELD.md) |
+| 딥페이크 판별 퀴즈 | `/quiz.html` (배포 시 `/quiz`) | 클로드 채팅으로 만든 단일 HTML 1개 | [ARCHITECTURE-QUIZ.md](./ARCHITECTURE-QUIZ.md) |
+
+딥페이크 판별 퀴즈(활동 1)로 단서를 익히고, AI 안전 방패 메이커(활동 2)로 규칙을 정하는 순서로
+'딥페이크의 두 얼굴' 한 차시를 이룹니다. 세 앱은 각 화면 아래에서 서로 링크로 이어집니다.
 
 ## 실행
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000  · 방패 앱은 /shield.html
+npm run dev      # http://localhost:3000  · 방패 앱은 /shield.html · 퀴즈는 /quiz.html
 ```
 
 | 스크립트 | 하는 일 |
 | --- | --- |
 | `npm run dev` | 개발 서버 (포트 3000) |
-| `npm run build` | 프로덕션 빌드 → `dist/` (진입 HTML 2개) |
+| `npm run build` | 프로덕션 빌드 → `dist/` (진입 HTML 3개) |
 | `npm run preview` | 빌드 결과 미리보기 |
 | `npm run lint` | `tsc --noEmit` 타입 검사 |
 
@@ -88,6 +92,35 @@ src/shield/
 
 ---
 
+## 3. 딥페이크 판별 퀴즈 (`/quiz.html`)
+
+사건 파일 8건을 하나씩 열어 진짜와 딥페이크를 판별하며, 판별 **단서**를 익히는 수업용 웹앱입니다.
+
+1. **사건 파일** — 출처·시각·상황과 관찰 단서 3줄이 함께 나옵니다.
+2. **근거 적기** — 답을 고르기 전에 왜 그렇게 생각했는지 먼저 적습니다(선택). 고르고 나면 잠깁니다.
+3. **판별** — 답을 고르면 **결정적 단서에만 형광펜이 켜지고** 해설과 반 정답률이 나옵니다.
+4. **결과** — 등급, 문항별 반 정답률, 내가 적은 근거 되돌아보기, 판별 요령 5줄.
+
+정답을 맞히는 것보다 **무엇을 봤어야 했는지**를 알려 주는 것이 목적이라, 답을 고르기 전에는
+세 단서가 모두 같은 무게로 보입니다. 정답률이 낮은 사건일수록 더 감쪽같은 딥페이크라는 뜻으로 읽습니다.
+
+```
+quiz.html                 진입 HTML
+src/quiz/
+├── App.tsx               상태 전부 (문항·선택·점수·근거·집계)
+├── data/questions.ts     사건 8건
+├── utils/                반 정답률 저장 · 등급과 논평 문구
+└── components/           표현 전용 컴포넌트 9개
+```
+
+문항은 배열 인덱스가 아니라 `id`로 집계되므로, `data/questions.ts`에 사건을 더하거나 순서를 바꿔도
+이미 쌓인 반 정답률이 다른 문항에 붙지 않습니다.
+
+반 정답률은 방패 앱과 같은 3단 저장소(`src/shared/storage.ts`)를 씁니다.
+한 기기는 문항마다 한 번만 세므로, '다시 도전하기'를 눌러도 같은 학생이 두 번 집계되지 않습니다.
+
+---
+
 ## 기술 스택
 
 Vite 6 · React 19 · TypeScript · Tailwind CSS v4 · lucide-react(윤리 시뮬레이터).
@@ -104,12 +137,12 @@ Vite 6 · React 19 · TypeScript · Tailwind CSS v4 · lucide-react(윤리 시�
 
 방패 앱 경로는 배포처마다 다릅니다.
 
-| 배포처 | 윤리 시뮬레이터 | 방패 메이커 |
-| --- | --- | --- |
-| GitHub Pages | `/test01/` | `/test01/shield.html` |
-| Vercel | `/` | `/shield` (또는 `/shield.html`) |
+| 배포처 | 윤리 시뮬레이터 | 방패 메이커 | 판별 퀴즈 |
+| --- | --- | --- | --- |
+| GitHub Pages | `/test01/` | `/test01/shield.html` | `/test01/quiz.html` |
+| Vercel | `/` | `/shield` (또는 `/shield.html`) | `/quiz` (또는 `/quiz.html`) |
 
-Pages에는 리라이트 기능이 없어 `/shield` 짧은 주소는 Vercel에서만 됩니다.
+Pages에는 리라이트 기능이 없어 `/shield`·`/quiz` 짧은 주소는 Vercel에서만 됩니다.
 
 ### GitHub Pages
 
@@ -137,7 +170,7 @@ Vercel 프로젝트: https://vercel.com/jh-lab1/test01
 | Output Directory | `dist` |
 | Root Directory | 저장소 루트 (비워 둠) |
 
-`/shield`로 들어오면 `/shield.html`로 연결되고, 그 밖의 경로는 `/index.html`로 되돌아갑니다.
+`/shield`·`/quiz`로 들어오면 각각 `/shield.html`·`/quiz.html`로 연결되고, 그 밖의 경로는 `/index.html`로 되돌아갑니다.
 
 ## 배포가 안 될 때
 

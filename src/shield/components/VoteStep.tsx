@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Tally, VoteChoice } from '../types';
-import type { Backend } from '../utils/storage';
+import type { Backend } from '../../shared/storage';
 import { describeBackend, viewTally } from '../utils/voteText';
 import { Button, PillButton } from './Button';
 import { Panel, PanelControls } from './Panel';

@@ -172,7 +172,13 @@ export default function App() {
           <p className="mt-1 text-slate-400">
             AI의 판단 기준을 사람이 어떻게 설정하느냐에 따라 공정성과 인간 사회의 신뢰가 결정됩니다.
           </p>
-          <p className="mt-3">
+          <p className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1">
+            <a
+              href={`${import.meta.env.BASE_URL}quiz.html`}
+              className="text-indigo-500 underline underline-offset-4 hover:text-indigo-700"
+            >
+              딥페이크 판별 퀴즈 (진짜일까, 가짜일까?) →
+            </a>
             <a
               href={`${import.meta.env.BASE_URL}shield.html`}
               className="text-indigo-500 underline underline-offset-4 hover:text-indigo-700"

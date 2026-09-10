@@ -1,5 +1,6 @@
 /**
- * 갤러리와 투표 집계를 담아 두는 저장소 어댑터.
+ * 반 전체가 함께 보는 값(방패 갤러리·투표 집계·퀴즈 정답률)을 담아 두는 저장소 어댑터.
+ * 두 앱(`src/shield`, `src/quiz`)이 같은 것을 쓰므로 앱 바깥에 둔다.
  *
  * 원본은 Claude 아티팩트 런타임이 넣어 주는 `window.storage`(반 전체 공유)만 썼고,
  * 그것이 없으면 전역 변수에 담아 새로고침하면 사라졌다.
@@ -31,7 +32,7 @@ function hasSharedStorage(): boolean {
 
 function hasLocalStorage(): boolean {
   try {
-    const probe = '__shield_probe__';
+    const probe = '__storage_probe__';
     window.localStorage.setItem(probe, '1');
     window.localStorage.removeItem(probe);
     return true;

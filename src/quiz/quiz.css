@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* 원본 HTML의 :root 변수를 Tailwind v4 테마 토큰으로 옮긴 것.
+   이렇게 두면 bg-card / text-amber 처럼 유틸리티로 바로 쓸 수 있다. */
+@theme {
+  --color-paper: #0b1020;
+  --color-card: #141b30;
+  --color-card-2: #1b2440;
+  --color-deep: #0c1122;
+  --color-inset: #0f1428;
+  --color-line: #2b3457;
+  --color-cyan: #37d0e0;
+  /* 원본이 그라디언트에서 쓰면서 정의하지 않아 막대가 투명해졌던 색. 여기서 채워 넣는다. */
+  --color-cyan-2: #2aa8bd;
+  --color-lime: #8be04a;
+  --color-real: #2fbf6b;
+  --color-fake: #e0556e;
+  --color-amber: #f2c94c;
+  --color-muted: #8c95b8;
+  --color-ink: #eef1fb;
+  --color-body: #d3d9f0;
+
+  --animate-rise: rise 0.25s ease;
+  --animate-blink: blink 1s infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* 한글 줄바꿈은 낱말 단위(keep-all)가 훨씬 읽기 좋다. */
+body {
+  font-family: "Pretendard", "맑은 고딕", "Malgun Gothic", system-ui, sans-serif;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 여러 겹의 그라디언트는 유틸리티로 옮기면 오히려 읽기 어려워 클래스로 남긴다. */
+.quiz-bg {
+  background:
+    radial-gradient(820px 440px at 12% -10%, #1c2b4a 0%, transparent 55%),
+    radial-gradient(760px 400px at 92% 108%, #14243a 0%, transparent 55%),
+    var(--color-paper);
+  background-attachment: fixed;
+}
+
+.case-card {
+  background: linear-gradient(180deg, var(--color-card), var(--color-card-2));
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* 제목·점수에 쓰는 청록→라임 그라디언트 글자. */
+.grad-text {
+  color: transparent;
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-lime));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.grad-fill {
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-lime));
+}
+
+.grad-fill-soft {
+  background: linear-gradient(90deg, var(--color-cyan-2), var(--color-lime));
+}
+
+.grad-fill-low {
+  background: linear-gradient(90deg, #d76a82, var(--color-fake));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

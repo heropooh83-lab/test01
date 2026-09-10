@@ -1,4 +1,4 @@
-# main에 푸시하면 두 앱을 빌드해 GitHub Pages로 배포한다.
+# main에 푸시하면 세 앱을 빌드해 GitHub Pages로 배포한다.
 # Vercel 배포와 별개로 동작하며, 서로 영향을 주지 않는다.
 name: Deploy to GitHub Pages
 

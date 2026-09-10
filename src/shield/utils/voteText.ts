@@ -1,4 +1,4 @@
-import type { Backend } from './storage';
+import type { Backend } from '../../shared/storage';
 import type { Tally } from '../types';
 
 export interface TallyView {
