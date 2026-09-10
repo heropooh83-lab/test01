@@ -1,5 +1,5 @@
 import type { GalleryEntry, Tally, VoteChoice } from '../types';
-import { readJson, writeJson } from './storage';
+import { readJson, writeJson } from '../../shared/storage';
 
 /** 원본 HTML이 쓰던 키를 그대로 유지해, 기존 데이터가 있으면 이어서 읽는다. */
 export const GALLERY_KEY = 'shield_gallery_v1';

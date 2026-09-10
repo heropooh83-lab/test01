@@ -11,11 +11,13 @@ export default defineConfig(() => {
     base: process.env.BASE_PATH || '/',
     plugins: [react(), tailwindcss()],
     build: {
-      // 앱이 둘이므로 진입 HTML도 둘이다 (index.html: AI 윤리 시뮬레이터, shield.html: AI 안전 방패 메이커).
+      // 앱마다 진입 HTML이 하나씩이다.
+      // index.html: AI 윤리 시뮬레이터 · shield.html: AI 안전 방패 메이커 · quiz.html: 딥페이크 판별 퀴즈
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, 'index.html'),
           shield: path.resolve(__dirname, 'shield.html'),
+          quiz: path.resolve(__dirname, 'quiz.html'),
         },
       },
     },
