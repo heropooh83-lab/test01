@@ -95,7 +95,7 @@ Vite 6 · React 19 · TypeScript · Tailwind CSS v4 · lucide-react(윤리 시�
 
 ## 배포 (Vercel)
 
-Vercel 프로젝트: https://vercel.com/jh-lab1/test012
+Vercel 프로젝트: https://vercel.com/jh-lab1/test01
 
 `main` 브랜치가 프로덕션 배포 대상입니다. `main`에 푸시하면 자동으로 재배포됩니다.
 
