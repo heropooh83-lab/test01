@@ -41,7 +41,11 @@ jobs:
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
 
+      # enablement: true 면 저장소에 Pages가 아직 꺼져 있어도 이 단계가 켜 준다.
+      # (없으면 "Get Pages site failed ... Not Found"로 멈추고 Settings에서 손으로 켜야 한다.)
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
