@@ -11,6 +11,8 @@ interface ShieldStepProps {
   shape: ShieldShape;
   entries: GalleryEntry[];
   galleryRef: React.RefObject<HTMLDivElement | null>;
+  /** 갤러리 등록 같은 짧은 안내. 원본은 이 문구를 4단계에만 그려 3단계에서는 보이지 않았다. */
+  status: string;
   onPrev: () => void;
   onNext: () => void;
   onSavePng: () => void;
@@ -27,6 +29,7 @@ export const ShieldStep: React.FC<ShieldStepProps> = ({
   shape,
   entries,
   galleryRef,
+  status,
   onPrev,
   onNext,
   onSavePng,
@@ -63,6 +66,8 @@ export const ShieldStep: React.FC<ShieldStepProps> = ({
         </Button>
       </div>
     </PanelControls>
+
+    <p className="no-print mt-3 min-h-[1.1em] text-center text-[0.84rem] font-semibold text-[#6b5f42]">{status}</p>
 
     <div ref={galleryRef}>
       <Gallery entries={entries} onDelete={onDeleteEntry} onRefresh={onRefreshGallery} />
