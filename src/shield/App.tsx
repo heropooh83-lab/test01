@@ -251,7 +251,10 @@ export default function App() {
         규칙은 <b className="text-[#c3ccec]">사람을 지키기 위한 약속</b>입니다. 좋은 방패는 기술을 막는 것이 아니라,
         사람을 지킵니다.
         <br />
-        <a className="mt-2 inline-block text-[#c3ccec] underline underline-offset-4 hover:text-gold-1" href="/">
+        <a
+          className="mt-2 inline-block text-[#c3ccec] underline underline-offset-4 hover:text-gold-1"
+          href={import.meta.env.BASE_URL}
+        >
           AI 윤리 판단 기준 시뮬레이터로 이동 →
         </a>
       </footer>

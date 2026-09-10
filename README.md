@@ -93,24 +93,67 @@ src/shield/
 Vite 6 · React 19 · TypeScript · Tailwind CSS v4 · lucide-react(윤리 시뮬레이터).
 서버와 외부 API 호출이 없어 정적 호스팅만으로 배포됩니다 (`vercel.json`에 SPA 리라이트 포함).
 
-## 배포 (Vercel)
+## 배포
+
+두 가지 경로로 배포됩니다. 둘은 서로 독립이라 한쪽이 막혀도 다른 쪽으로 열 수 있습니다.
+
+| 경로 | 주소 | 무엇이 트리거하나 |
+| --- | --- | --- |
+| GitHub Pages | `https://heropooh83-lab.github.io/test01/` | `main`에 푸시 (`.github/workflows/pages.yml`) |
+| Vercel | Vercel 프로젝트의 Domains에 배정된 주소 | `main`에 푸시 |
+
+방패 앱 경로는 배포처마다 다릅니다.
+
+| 배포처 | 윤리 시뮬레이터 | 방패 메이커 |
+| --- | --- | --- |
+| GitHub Pages | `/test01/` | `/test01/shield.html` |
+| Vercel | `/` | `/shield` (또는 `/shield.html`) |
+
+Pages에는 리라이트 기능이 없어 `/shield` 짧은 주소는 Vercel에서만 됩니다.
+
+### GitHub Pages
+
+저장소 Settings → Pages → Source를 **GitHub Actions**로 한 번만 바꿔 주면 그 뒤로는 자동입니다.
+
+Pages는 `https://<사용자>.github.io/<저장소>/` 처럼 하위 경로에 올라가므로 자산 경로의 기준을 맞춰야 합니다.
+워크플로가 `BASE_PATH=/test01/`를 넘겨 주고, `vite.config.ts`가 그 값을 `base`로 씁니다.
+값이 없으면 `/`가 되어 Vercel 배포에는 영향을 주지 않습니다.
+
+앱 사이를 오가는 링크는 `import.meta.env.BASE_URL`을 써서 두 배포처 모두에서 맞게 풀립니다.
+
+### Vercel
 
 Vercel 프로젝트: https://vercel.com/jh-lab1/test01
 
 `main` 브랜치가 프로덕션 배포 대상입니다. `main`에 푸시하면 자동으로 재배포됩니다.
-
 `vercel.json`에 프레임워크, 빌드 명령, 출력 디렉터리를 명시해 두었으므로 별도 설정 없이 배포됩니다.
 
 | 항목 | 값 |
 | --- | --- |
 | Framework Preset | Vite |
+| Install Command | `npm ci` |
 | Build Command | `npm run build` |
 | Output Directory | `dist` |
 | Root Directory | 저장소 루트 (비워 둠) |
 
 `/shield`로 들어오면 `/shield.html`로 연결되고, 그 밖의 경로는 `/index.html`로 되돌아갑니다.
 
-**404: NOT_FOUND 가 뜬다면** 대부분 Vercel이 바라보는 브랜치에 앱 코드가 없는 경우입니다.
-Vercel은 기본적으로 `main` 브랜치를 프로덕션으로 배포하므로, 앱이 다른 브랜치에만 있으면
-빌드 결과물이 비어 404가 납니다. Vercel 프로젝트의 Settings → Git → Production Branch가
-실제 코드가 있는 브랜치를 가리키는지 확인하세요.
+## 배포가 안 될 때
+
+**"Return to Team" 버튼이 있는 404**는 앱이 아니라 **Vercel 대시보드**의 404입니다.
+없는 프로젝트 주소를 열었다는 뜻이지 배포가 실패한 것이 아닙니다.
+`vercel.com/jh-lab1/test01`이 맞는 주소인지 확인하세요.
+
+**`404: NOT_FOUND` 와 배포 ID가 함께 뜨는 화면**이 앱 쪽 404입니다. 이때는 두 가지를 보세요.
+
+1. Vercel이 보는 브랜치에 앱 코드가 있는지. Vercel은 기본적으로 `main`을 프로덕션으로 배포하므로,
+   앱이 다른 브랜치에만 있으면 빌드 결과물이 비어 404가 납니다.
+   Settings → Git → Production Branch가 실제 코드가 있는 브랜치인지 확인하세요.
+2. 빌드가 성공했는지. Deployments 탭에서 최신 Production 배포의 상태와 로그를 확인하세요.
+
+로컬에서 배포와 같은 조건을 재현하려면 아래를 그대로 돌려 보면 됩니다.
+
+```bash
+npm ci && npm run build && npm run preview   # Vercel과 같은 설치·빌드 명령
+BASE_PATH=/test01/ npm run build             # Pages와 같은 조건
+```
