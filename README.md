@@ -113,7 +113,8 @@ Pages에는 리라이트 기능이 없어 `/shield` 짧은 주소는 Vercel에�
 
 ### GitHub Pages
 
-저장소 Settings → Pages → Source를 **GitHub Actions**로 한 번만 바꿔 주면 그 뒤로는 자동입니다.
+워크플로의 `configure-pages` 단계가 `enablement: true`로 Pages를 직접 켜므로 별도 설정이 필요 없습니다.
+혹시 권한 문제로 이 단계가 막히면 저장소 Settings → Pages → Source를 **GitHub Actions**로 한 번만 바꿔 주세요.
 
 Pages는 `https://<사용자>.github.io/<저장소>/` 처럼 하위 경로에 올라가므로 자산 경로의 기준을 맞춰야 합니다.
 워크플로가 `BASE_PATH=/test01/`를 넘겨 주고, `vite.config.ts`가 그 값을 `base`로 씁니다.
