@@ -174,7 +174,7 @@ export default function App() {
           </p>
           <p className="mt-3">
             <a
-              href="/shield.html"
+              href={`${import.meta.env.BASE_URL}shield.html`}
               className="text-indigo-500 underline underline-offset-4 hover:text-indigo-700"
             >
               AI 안전 방패 메이커 (딥페이크 안전 사용 규칙) →
