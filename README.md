@@ -113,8 +113,20 @@ Pages에는 리라이트 기능이 없어 `/shield` 짧은 주소는 Vercel에�
 
 ### GitHub Pages
 
-워크플로의 `configure-pages` 단계가 `enablement: true`로 Pages를 직접 켜므로 별도 설정이 필요 없습니다.
-혹시 권한 문제로 이 단계가 막히면 저장소 Settings → Pages → Source를 **GitHub Actions**로 한 번만 바꿔 주세요.
+> **처음 한 번은 사람이 켜 줘야 합니다.**
+> 저장소 **Settings → Pages → Source**를 **GitHub Actions**로 바꿔 주세요. 그 뒤로는 자동입니다.
+
+워크플로에 `enablement: true`가 있지만 이것만으로는 켜지지 않습니다.
+Actions에 주어지는 `GITHUB_TOKEN`은 `pages: write`가 있어도 Pages 사이트를 **새로 만들 권한은 없습니다.**
+아직 Pages가 꺼져 있으면 아래처럼 실패합니다.
+
+```
+Get Pages site failed. Error: Not Found
+Create Pages site failed. Error: Resource not accessible by integration
+```
+
+사이트를 만드는 것은 저장소 관리자만 할 수 있어, 위의 Settings 조작이 한 번은 필요합니다.
+한 번 켜 두면 `enablement: true`는 그냥 통과하므로 그대로 두어도 됩니다.
 
 Pages는 `https://<사용자>.github.io/<저장소>/` 처럼 하위 경로에 올라가므로 자산 경로의 기준을 맞춰야 합니다.
 워크플로가 `BASE_PATH=/test01/`를 넘겨 주고, `vite.config.ts`가 그 값을 `base`로 씁니다.
