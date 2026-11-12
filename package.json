@@ -1,0 +1,9 @@
+{
+  "name": "red-wall-class",
+  "version": "1.0.0",
+  "description": "빨간 벽 허물기 수업 - 장애인식개선 수업용 웹앱",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,12 @@
+# Render(render.com)에 올릴 때 쓰는 설정 파일입니다.
+services:
+  - type: web
+    name: red-wall-class
+    runtime: node
+    plan: free
+    buildCommand: echo "빌드 필요 없음"
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: ADMIN_PIN
+        sync: false
