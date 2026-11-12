@@ -1,0 +1,7 @@
+{
+  "name": "red-wall-class-vercel",
+  "version": "1.0.0",
+  "description": "빨간 벽 허물기 - 장애인식개선 수업용 웹앱 (Vercel 배포용)",
+  "private": true,
+  "engines": { "node": ">=18" }
+}
